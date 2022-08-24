@@ -12,7 +12,7 @@ setup(
     version='0.2.0',
     url='https://github.com/michaeljones/packed',
     download_url='https://github.com/michaeljones/packed',
-    license='BSD',
+    license='GPL v2',
     author='Michael Jones',
     author_email='m.pricejones@gmail.com',
     description='JSX style syntax for Python',
