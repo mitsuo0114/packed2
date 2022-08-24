@@ -15,6 +15,7 @@ jobs:
           pkg-manager: pip
       - run:
           command: |
+            python -m flake8
             python -m unittest discover
           name: Test
 
