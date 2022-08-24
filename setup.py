@@ -3,6 +3,7 @@ try:
     from setuptools import setup
 except ImportError:
     import distribute_setup
+
     distribute_setup.use_setuptools()
     from setuptools import setup
 

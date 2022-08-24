@@ -1,6 +1,3 @@
-
-from __future__ import unicode_literals, print_function
-
 from unittest import TestCase
 
 from packed import Elem, Component
@@ -9,7 +6,6 @@ from packed import Elem, Component
 class TestComponent(TestCase):
 
     def test_simple_component(self):
-
         class MyComponent(object):
 
             def render(self):
@@ -22,7 +18,6 @@ class TestComponent(TestCase):
         self.assertEqual(elem.to_html(), expected)
 
     def test_text_component(self):
-
         class MyComponent(object):
 
             def render(self):
@@ -35,7 +30,6 @@ class TestComponent(TestCase):
         self.assertEqual(elem.to_html(), expected)
 
     def test_props(self):
-
         class MyComponent(Component):
 
             def render(self):

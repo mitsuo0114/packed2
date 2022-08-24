@@ -1,6 +1,3 @@
-
-from __future__ import unicode_literals, print_function
-
 import inspect
 import re
 import sys
@@ -9,9 +6,7 @@ import functools
 
 from pypeg2 import parse, compose, List, name, maybe_some, attr, optional, ignore, Symbol
 
-
 __version__ = '0.2.0'
-
 
 whitespace = re.compile(r'\s+')
 text = re.compile(r'[^<]+')
@@ -95,8 +90,8 @@ class Attributes(List):
         text = []
         text.append('{indent}{{\n'.format(indent=indent_str))
         for entry in self:
-            if not isinstance(entry, basestring):
-                text.append(entry.compose(parser, indent=indent+1))
+            if not isinstance(entry, str):
+                text.append(entry.compose(parser, indent=indent + 1))
                 text.append('\n')
         text.append('{indent}}},\n'.format(indent=indent_str))
 
@@ -131,7 +126,7 @@ class SelfClosingTag(object):
                 contents_sep=contents_sep,
             )
         )
-        text.append(self.attributes.compose(parser, followed_by_children=False, indent=indent+1))
+        text.append(self.attributes.compose(parser, followed_by_children=False, indent=indent + 1))
         text.append(
             "{indent})".format(
                 indent=end_indent_str if has_contents else '',
@@ -188,7 +183,7 @@ class PairedTag(object):
             text, _ = parser.parse(text, '</')
             text, _ = parser.parse(text, result.name)
             text, _ = parser.parse(text, '>')
-        except SyntaxError, e:
+        except SyntaxError as e:
             return text, e
 
         return text, result
@@ -216,14 +211,14 @@ class PairedTag(object):
             )
         )
         text.append(
-            self.attributes.compose(parser, followed_by_children=has_children, indent=indent+1)
+            self.attributes.compose(parser, followed_by_children=has_children, indent=indent + 1)
         )
-        text.append(self.children.compose(parser, indent=indent+1))
+        text.append(self.children.compose(parser, indent=indent + 1))
         text.append(
             "{indent})".format(
                 indent=end_indent_str if has_contents else '',
-                )
             )
+        )
 
         return ''.join(text)
 
@@ -257,7 +252,7 @@ class PackedBlock(List):
         indent_text = re.match(r' *', self.line_start).group(0)
         indent = len(indent_text) / 4
         for entry in self:
-            if isinstance(entry, basestring):
+            if isinstance(entry, str):
                 text.append(entry)
             else:
                 text.append(entry.compose(parser, indent=indent, first=True))
@@ -295,7 +290,7 @@ class CodeBlock(List):
     def compose(self, parser, attr_of=None):
         text = []
         for entry in self:
-            if isinstance(entry, basestring):
+            if isinstance(entry, str):
                 text.append(entry)
             else:
                 text.append(entry.compose(parser))
@@ -319,7 +314,7 @@ def to_html(entity):
         return entity.to_html()
     else:
         # Assume unicode string or compatible
-        return unicode(entity)
+        return str(entity)
 
 
 class Elem(object):
@@ -347,10 +342,7 @@ class Elem(object):
             return to_html(output)
 
         attribute_text = ' '.join(
-            map(
-                lambda item: format_attribute(item[0], item[1]),
-                self.attributes.iteritems()
-            )
+            [format_attribute(item[0], item[1]) for item in iter(self.attributes.items())]
         )
 
         if attribute_text:
@@ -388,6 +380,7 @@ def packed(func):
         result = func(*args, **kwargs)
         text = to_html(result)
         return text
+
     return wrapper
 
 
@@ -413,7 +406,6 @@ def translate_file(pyx_file, py_path):
 
 
 def main(args):
-
     target_directory = args[0]
 
     for root, dirs, files in os.walk(target_directory):
