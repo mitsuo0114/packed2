@@ -250,7 +250,7 @@ class PackedBlock(List):
     def compose(self, parser, attr_of=None):
         text = [self.line_start]
         indent_text = re.match(r' *', self.line_start).group(0)
-        indent = len(indent_text) / 4
+        indent = len(indent_text) // 4
         for entry in self:
             if isinstance(entry, str):
                 text.append(entry)

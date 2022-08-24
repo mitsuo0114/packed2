@@ -36,7 +36,7 @@ class TestElem(TestCase):
     def test_elem_multiple_attribute(self):
         elem = Elem('a', {'class': 'some-icon', 'data-width': 800}, Elem('b', {}))
 
-        expected = '<a data-width="800" class="some-icon"><b></b></a>'
+        expected = '<a class="some-icon" data-width="800"><b></b></a>'
 
         self.assertEqual(elem.to_html(), expected)
 
